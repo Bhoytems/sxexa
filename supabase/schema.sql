@@ -5,6 +5,8 @@ create table users (
   first_name text, username text, photo_url text,
   wallet text,
   terms_accepted_at timestamptz,
+  notify_status text,                    -- null = not asked yet, 'allowed' or 'declined'
+  welcomed_at timestamptz,
   referred_by bigint references users(id),
   created_at timestamptz default now()
 );
