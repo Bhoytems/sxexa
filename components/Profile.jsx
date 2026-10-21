@@ -1,6 +1,7 @@
 'use client';
 import LinkWallet from './LinkWallet';
 import Admin from './Admin';
+import { askForMessages } from '@/lib/notify';
 
 export default function Profile({ me, reloadMe, toast }) {
   return (
@@ -12,6 +13,12 @@ export default function Profile({ me, reloadMe, toast }) {
       </div>
       <div className="m">Wallet</div>
       <LinkWallet me={me} reloadMe={reloadMe} toast={toast} />
+      {me.notifyStatus !== 'allowed' && (
+        <div className="c">
+          <div className="m">Messages from Soledge are off, so you will not be told when a withdrawal is paid.</div>
+          <button className="sec" style={{ marginTop: 8, width: '100%' }} onClick={() => askForMessages(reloadMe, toast)}>Turn on messages</button>
+        </div>
+      )}
       {me.isAdmin && <Admin toast={toast} />}
     </div>
   );

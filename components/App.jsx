@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { askForMessages } from '@/lib/notify';
 import Providers from './Providers';
 import Trade from './Trade';
 import Positions from './Positions';
@@ -25,6 +26,8 @@ function Shell() {
   useEffect(() => {
     Promise.all([api('/api/config').then(setCfg), reloadMe()]).catch(() => setFatal('Open Soledge from Telegram to sign in.'));
   }, [reloadMe]);
+
+  useEffect(() => { if (me && me.notifyStatus === null) askForMessages(reloadMe, toast); }, [me?.id]); // first open only
 
   if (fatal) return <div className="screen"><div className="c">{fatal}</div></div>;
   if (!cfg || !me) return <div className="screen"><div className="m">Loading…</div></div>;
